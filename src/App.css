@@ -1,42 +1,379 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* =========================
+   Global / Reset
+========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --frame-w: 1000px;
+  --side-w: 230px;
+  --gap: 10px;
+
+  --border-dark: #111;
+  --border-mid: #1a1a1a;
+
+  --purple: #8f66d8;
+}
+
+body {
+  margin: 0;
+}
+
+/* =========================
+   Page / Frame
+========================= */
+.page {
+  min-height: 100vh;
+  background: #0b0b0b;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: #111;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP",
+    sans-serif;
+}
+
+.frame {
+  width: var(--frame-w);
+  max-width: 96vw;
+  border: 3px solid #222;
+  background: #000;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   Rows (Top / Main)
+   2 columns: left + right
+========================= */
+.row {
+  display: grid;
+  grid-template-columns: 1fr var(--side-w);
+  gap: var(--gap);
+}
+
+.row--top {
+  margin-bottom: var(--gap);
+}
+
+/* left/right containers */
+.left,
+.right {
+  border: 2px solid var(--border-mid);
+}
+
+/* =========================
+   TopHeader (left-top)
+========================= */
+.top {
+  display: grid;
+  grid-template-columns: 1.3fr 1.2fr 1.8fr; /* coinは右側へ移した想定 */
+  gap: 0;
+  border: 2px solid var(--border-dark);
+  background: #fff;
+}
+
+.topBox {
+  border-right: 2px solid var(--border-dark);
+  min-height: 76px;
+  display: grid;
+  place-items: center;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.topBox:last-child {
+  border-right: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.topBox--left {
+  background: var(--purple);
+  color: #111;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.topBox--center .topLabel {
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 6px;
 }
 
-.card {
-  padding: 2em;
+.topValue {
+  font-weight: 800;
+  font-size: 28px;
+  margin-bottom: 6px;
 }
 
-.read-the-docs {
-  color: #888;
+/* =========================
+   Play area (left-main)
+========================= */
+.playArea {
+  background: #000;
+  border: 2px solid var(--border-mid);
+  padding: 10px;
+}
+
+/* 共通グリッド（列幅統一用）
+   リール・STOPの列幅はここで揃える */
+.slotGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+/* ---- Reel Headers ---- */
+.reelHeaderGrid {
+  /* .slotGrid をJSXで併用する想定 */
+}
+
+.reelHeader {
+  border: 2px solid var(--border-dark);
+  height: 46px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.reelHeader--stem {
+  background: #111;
+  color: #fff;
+}
+.reelHeader--mizen {
+  background: #f29b9b;
+}
+.reelHeader--renyo {
+  background: #f2c97a;
+}
+.reelHeader--shushi {
+  background: #dff59a;
+}
+.reelHeader--rentai {
+  background: #6db59f;
+}
+.reelHeader--izen {
+  background: #88b7e6;
+}
+.reelHeader--meirei {
+  background: #b8a0d8;
+}
+
+/* ---- Reel Windows ---- */
+.reelWindowGrid {
+  margin-top: 8px;
+}
+
+.reelWindow {
+  background: #fff;
+  border: 2px solid var(--border-dark);
+  height: 122px;
+  display: grid;
+  place-items: center;
+}
+
+.reelChar {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* ---- STOP Row ---- */
+.stopGrid {
+  margin-top: 10px;
+  align-items: center;
+}
+
+.stopBtn {
+  border: 2px solid var(--border-dark); /* 枠も揃えると視覚的に安定 */
+  height: 42px;
+  font-weight: 900;
+  font-size: 22px;
+  cursor: pointer;
+  color: #000;
+  border-radius: 10px;
+}
+
+.stopDummy {
+  height: 42px;
+  border-radius: 10px;
+  border: 2px solid #333;
+  background: #111;
+}
+
+.stopBtn--mizen {
+  background: #e00000;
+}
+.stopBtn--renyo {
+  background: #f2c200;
+}
+.stopBtn--shushi {
+  background: #c9ff00;
+}
+.stopBtn--rentai {
+  background: #00a85a;
+}
+.stopBtn--izen {
+  background: #2f78d6;
+}
+.stopBtn--meirei {
+  background: #6a2ca6;
+}
+
+.stopBtn:active {
+  transform: translateY(1px);
+}
+
+/* ---- Marquee (image area) ---- */
+.marquee {
+  margin-top: 12px;
+  border: 2px solid var(--border-mid);
+  background: #111;
+  height: 210px;
+  display: grid;
+  place-items: center;
+}
+
+.marqueePlaceholder {
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.55);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.marqueeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================
+   Right-top: SideTop panel
+   (coin + rule + lever)
+========================= */
+.sideTopPanel {
+  background: #808080;
+  border: 2px solid var(--border-mid);
+  padding: 10px;
+  height: 100%;
+}
+
+.sideCoinRule {
+  height: 34px;
+  background: var(--purple);
+  border: 2px solid var(--border-dark);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.walletBox {
+  margin-top: 10px;
+  background: #fff;
+  border: 2px solid var(--border-dark);
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.walletTitle {
+  font-weight: 900;
+}
+
+.walletValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 22px;
+}
+
+/* Lever (simple mock) */
+.leverBox {
+  margin-top: 14px;
+  display: grid;
+  place-items: center;
+  gap: 0;
+}
+
+.leverKnob {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #f28a2b;
+  border: 2px solid var(--border-dark);
+}
+
+.leverStem {
+  width: 26px;
+  height: 56px;
+  background: #cfd2d6;
+  border: 2px solid var(--border-dark);
+  margin-top: -8px;
+}
+
+.leverSlot {
+  width: 26px;
+  height: 36px;
+  background: #111;
+  border: 2px solid var(--border-dark);
+  margin-top: -2px;
+}
+
+/* =========================
+   Right-main: Settings panel
+========================= */
+.settings {
+  background: #fff;
+  border: 2px solid var(--border-mid);
+  padding: 10px;
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr;
+  gap: 10px;
+  height: 100%;
+}
+
+.settingsTitle {
+  text-align: center;
+  font-weight: 900;
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 6px;
+}
+
+.settingsRow {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.settingsLabel {
+  font-weight: 800;
+  color: #111;
+}
+
+.settingsSelect {
+  height: 30px;
+}
+
+.applyBtn {
+  height: 44px;
+  border: 0;
+  background: var(--purple);
+  color: #111;
+  font-weight: 900;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.applyBtn:active {
+  transform: translateY(1px);
 }
