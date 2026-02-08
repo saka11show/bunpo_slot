@@ -1,4 +1,6 @@
 import "./App.css";
+import { useState } from "react";
+
 import { TargetInfo } from "./components/TargetInfo";
 import { Reels } from "./components/Reels";
 import { StopButtons } from "./components/StopButtons";
@@ -8,6 +10,14 @@ import { GameSettings } from "./components/GameSettings";
 import { Lever } from "./components/Lever";
 
 export default function App() {
+
+  const [isSpinning, setIsSpinning] = useState(false); //回っている状態を管理
+  const onLeverClick = () => {
+      setIsSpinning(true);
+  }
+
+
+
   return (
     <div className="page">
       <div className="frame">
@@ -23,7 +33,7 @@ export default function App() {
           {/* 右：筐体サイド */}
           <aside className="side">
             <SideHeader />
-            <Lever />
+            <Lever disabled={isSpinning} onLeverClick={onLeverClick} />
             <GameSettings />
           </aside>
         </div>
