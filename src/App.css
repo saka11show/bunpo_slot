@@ -1,119 +1,115 @@
 .page {
   width: 100vw;
   height: 100vh;
-  background-color: blue;
-}
-
-.frame {
-  background-color: green;
+  background-color: black;
 }
 
 .contents {
   display: grid;
   grid-template-columns: 75% 25%;
-  background-color: red;
 }
 
 .main {
   display: grid;
   grid-template-rows: 15vh 40vh 10vh 35vh;
-  background-color: yellow;
 }
 
 .target-info {
   display: grid;
   grid-template-columns: 30% 35% 35%;
   padding: 5px;
-  background-color: coral;
 }
 
 .target-title {
-  background-color: chartreuse;
+  border: 2px solid black;
+  background-color: #a59aca;
 }
 
 .target-basic-form {
   display: grid;
   grid-template-rows: 30% 70%;
-  background-color: blueviolet;
 }
 
 .target-basic-form-title {
-  background-color: cadetblue;
+  border: 2px solid black;
+  background-color: #a59aca;
 }
 
 .target-basic-form-value {
-  background-color: cornflowerblue;
+  border: 2px solid black;
+  background-color: white;
 }
 
 .target-katsuyo-type {
   display: grid;
   grid-template-rows: 30% 70%;
-  background-color: aquamarine;
 }
 
 .target-katsuyo-type-title {
-  background-color: darkslateblue;
+  border: 2px solid black;
+  background-color: #a59aca;
 }
 
 .target-katsuyo-type-value {
-  background-color: gold;
+  border: 2px solid black;
+  background-color: white;
 }
 
 .reels {
-  padding: 5px;
   display: grid;
   grid-template-rows: 20% 80%;
-  background-color: aqua;
 }
 
 .reel-headers {
   display: grid;
   grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
-  padding: 2px;
-  background-color: darkgreen;
 }
 
 .reel-header {
-  margin: 2px;
-  background-color:bisque;
+  border: 4px solid #222222;
+  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
 }
 
 .reel-windows {
   display: grid;
   grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
-  padding: 2px;
-  background-color: fuchsia;
+}
+
+.reel-gokan {
+  border: 4px solid #222222;
+  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
 }
 
 .reel-window{
   display: grid;
   grid-template-rows: 25% 50% 25%;
-  margin: 2px;
-  background-color: darkkhaki;
+  border: 4px solid #222222;
 }
 
 .reel-window-top {
-  background-color: greenyellow;
+  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
+  background-color: gray;
 }
 
 .reel-window-middle {
-  background-color: wheat;
+  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
+  background-color: white;
 }
 
 .reel-window-bottom {
-  background-color: slategray;
+  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
+  background-color: gray;
 }
 
 .stop-buttons {
   display: grid;
   grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
-  padding: 5px;
-  background-color: blueviolet;
+  align-items: center;
 }
 
 .stop-button {
   margin: 2px;
-  background-color:cyan;
+  height: 70%;
 }
 
 .marquee {
@@ -121,5 +117,57 @@
 }
 
 .side {
-  
+  display: grid;
+  grid-template-rows: 15vh 50vh 35vh;
 }
+
+.side-header {
+  display: grid;
+  grid-template-rows: 30% 70%;
+  border: 5px solid black;
+}
+
+.coin-status-title {
+  border: 2px solid black;
+  background-color: #a59aca;
+}
+
+.coin-status {
+  border: 2px solid black;
+  background-color: white;
+}
+
+.lever {
+  display: grid;
+  grid-template-rows: 10% 90%;
+  padding: 7px;
+}
+
+.lever-title {
+  background-color: #a59aca;
+}
+
+.lever-button {
+  margin: 3px;
+  background-color: #e0e0e0
+}
+
+.game-settings {
+  display: grid;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  border: 5px solid black;
+  background-color: #c0c0c0
+}
+
+.setting {
+  margin: 1px;
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.setting-button {
+  margin: 5px;
+  background-color: #a59aca;
+}
+
+

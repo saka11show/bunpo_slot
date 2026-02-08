@@ -1,15 +1,11 @@
 export function SideHeader() {
   return (
-    <div className="sideTopPanel">
-      <div className="sideCoinRule">1回1コイン</div>
+    <section className="side-header">
+      <div className="coin-status-title center"><h2>所持コイン</h2></div>
 
-      <div className="walletBox">
-        <div className="walletTitle">所持コイン</div>
-        <div className="walletValue">
-          <span aria-hidden="true">💰</span>
-          <span>14</span>
-        </div>
+      <div className="coin-status center">
+        <h1>💰14 coin</h1>
       </div>
-    </div>
+    </section>
   );
 }

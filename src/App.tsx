@@ -20,17 +20,11 @@ export default function App() {
             <Marquee />
           </main>
 
-          {/* 右：サイド筐体 */}
+          {/* 右：筐体サイド */}
           <aside className="side">
-            <section className="side-header">
-              <SideHeader />
-            </section>
-            <section className="lever">
-              <Lever />
-            </section>
-            <section className="game-setting">
-              <GameSettings />
-            </section>
+            <SideHeader />
+            <Lever />
+            <GameSettings />
           </aside>
         </div>
       </div>

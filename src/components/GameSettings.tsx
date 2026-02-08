@@ -1,20 +1,20 @@
 export function GameSettings() {
   return (
-    <div className="settings">
-      <div className="settingsTitle">ゲーム設定</div>
+    <section className="game-settings">
+      <div className="setting-title center"><h2>ゲーム設定</h2></div>
 
-      <div className="settingsRow">
-        <div className="settingsLabel">◇回転速度</div>
-        <select className="settingsSelect" defaultValue="normal">
+      <div className="setting">
+        <div className="setting-label">◇回転速度</div>
+        <select className="setting-select" defaultValue="normal">
           <option value="slow">遅い</option>
           <option value="normal">普通</option>
           <option value="fast">速い</option>
         </select>
       </div>
 
-      <div className="settingsRow">
-        <div className="settingsLabel">◇STOP箇所</div>
-        <select className="settingsSelect" defaultValue="3">
+      <div className="setting">
+        <div className="setting-label">◇STOP箇所</div>
+        <select className="setting-select" defaultValue="3">
           <option value="6">無制限</option>
           <option value="3">3列</option>
           <option value="2">2列</option>
@@ -22,17 +22,17 @@ export function GameSettings() {
         </select>
       </div>
 
-      <div className="settingsRow">
-        <div className="settingsLabel">◇音声</div>
-        <select className="settingsSelect" defaultValue="off">
+      <div className="setting">
+        <div className="setting-label">◇音声</div>
+        <select className="setting-select" defaultValue="off">
           <option value="on">オン</option>
           <option value="off">オフ</option>
         </select>
       </div>
 
-      <button className="applyBtn" type="button">
+      <button className="setting-button" type="button">
         設定を反映
       </button>
-    </div>
+    </section>
   );
 }

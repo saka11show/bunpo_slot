@@ -1,11 +1,8 @@
 export function Lever() {
   return (
-    <div className="leverPanel">
-      <div className="leverBox" aria-label="lever mock">
-        <div className="leverKnob" />
-        <div className="leverStem" />
-        <div className="leverSlot" />
-      </div>
-    </div>
+    <section className="lever">
+      <div className="lever-title center"><h1>１回１コイン</h1></div>
+      <button className="lever-button">lever</button>
+    </section>
   );
 }

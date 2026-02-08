@@ -9,3 +9,18 @@ body {
   background-color: #242424; /* 外界の色 */
 }
 
+h1 {
+  margin: 0;
+  font-family: "HiraginoSans-W0";
+}
+
+h2 {
+  margin: 0;
+  font-family: "HiraginoSans-W0";
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
