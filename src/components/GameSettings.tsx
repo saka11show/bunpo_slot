@@ -1,4 +1,4 @@
-export function SettingsPanel() {
+export function GameSettings() {
   return (
     <div className="settings">
       <div className="settingsTitle">ゲーム設定</div>

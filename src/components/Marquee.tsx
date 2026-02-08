@@ -1,9 +1,7 @@
 export function Marquee() {
   return (
-    <div className="marquee">
-      <div className="marqueePlaceholder">
-        ここに筐体バナー画像を入れる
-      </div>
-    </div>
+    <section className="marquee">
+      <img src="./public/文法スロット.png" style={{width: "100%", height:"100%"}}></img>
+    </section>
   );
 }

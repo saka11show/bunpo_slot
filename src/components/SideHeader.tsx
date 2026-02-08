@@ -1,4 +1,4 @@
-export function SideTop() {
+export function SideHeader() {
   return (
     <div className="sideTopPanel">
       <div className="sideCoinRule">1回1コイン</div>
@@ -9,12 +9,6 @@ export function SideTop() {
           <span aria-hidden="true">💰</span>
           <span>14</span>
         </div>
-      </div>
-
-      <div className="leverBox">
-        <div className="leverKnob" />
-        <div className="leverStem" />
-        <div className="leverSlot" />
       </div>
     </div>
   );

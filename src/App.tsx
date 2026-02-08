@@ -1,35 +1,37 @@
 import "./App.css";
-import { TopHeader } from "./components/TopHeader";
+import { TargetInfo } from "./components/TargetInfo";
 import { Reels } from "./components/Reels";
-import { StopRow } from "./components/StopRow";
+import { StopButtons } from "./components/StopButtons";
 import { Marquee } from "./components/Marquee";
-import { SideTop } from "./components/SideTop";
-import { SettingsPanel } from "./components/SettingsPanel";
+import { SideHeader } from "./components/SideHeader";
+import { GameSettings } from "./components/GameSettings";
+import { Lever } from "./components/Lever";
 
 export default function App() {
   return (
     <div className="page">
       <div className="frame">
-        {/* 上段：ヘッダー(左)＋サイド上(右) */}
-        <div className="row row--top">
-          <div className="left">
-            <TopHeader />
-          </div>
-          <div className="right">
-            <SideTop />
-          </div>
-        </div>
-
-        {/* 下段：プレイ(左)＋設定(右) */}
-        <div className="row row--main">
-          <div className="left playArea">
+        <div className="contents">
+          {/* 左：メイン筐体 */}
+          <main className="main">
+            <TargetInfo />
             <Reels />
-            <StopRow />
+            <StopButtons />
             <Marquee />
-          </div>
-          <div className="right">
-            <SettingsPanel />
-          </div>
+          </main>
+
+          {/* 右：サイド筐体 */}
+          <aside className="side">
+            <section className="side-header">
+              <SideHeader />
+            </section>
+            <section className="lever">
+              <Lever />
+            </section>
+            <section className="game-setting">
+              <GameSettings />
+            </section>
+          </aside>
         </div>
       </div>
     </div>
