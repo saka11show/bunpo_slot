@@ -48,8 +48,13 @@ export default function App() {
   const [result, setResult] = useState<null | "success" | "fail">(null);
   const [coins, setCoins] = useState(14); // 初期コインは仮で14
   const [currentTarget, setCurrentTarget] = useState<Target>(targets[0]);
+  const [hitMap, setHitMap] = useState<boolean[]>(Array(6).fill(false));
+
   const targetRef = useRef<Target>(targets[0]);
 
+  const [marqueeBlink, setMarqueeBlink] = useState(false);
+  const [marqueeFailLock, setMarqueeFailLock] = useState(false);
+  const blinkTimerRef = useRef<number | null>(null);
 
 
 
@@ -57,24 +62,52 @@ export default function App() {
     if (!isSpinning) return;
 
     const anySpinning = spinningCols.some((v) => v);
-    if (!anySpinning) {
-      setIsSpinning(false);
+    if (anySpinning) return;
 
-      if (timerRef.current !== null) {
-        window.clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
+    // 全列停止
+    setIsSpinning(false);
 
-      const ok = judge();
-      setResult(ok ? "success" : "fail");
-
-      if (ok) {
-        // 報酬コイン（仮：+3）
-        setCoins((c) => c + 3);
-      }
+    if (timerRef.current !== null) {
+      window.clearInterval(timerRef.current);
+      timerRef.current = null;
     }
 
+    const ok = judge(); // hitMapもここで更新
+    setResult(ok ? "success" : "fail");
+
+    if (ok) setCoins((c) => c + 3);
+
   }, [isSpinning, spinningCols]);
+
+  useEffect(() => {
+    if (blinkTimerRef.current !== null) {
+      window.clearTimeout(blinkTimerRef.current);
+      blinkTimerRef.current = null;
+    }
+
+    if (result === "success") {
+      setMarqueeFailLock(false);
+      setMarqueeBlink(true);
+
+      blinkTimerRef.current = window.setTimeout(() => {
+        setMarqueeBlink(false);
+        blinkTimerRef.current = null;
+      }, 1200);
+    }
+
+    if (result === "fail") {
+      setMarqueeBlink(false);
+      setMarqueeFailLock(true);
+    }
+
+    if (result === null) {
+      setMarqueeBlink(false);
+    }
+
+  }, [result]);
+
+
+
 
   const spinningColsRef = useRef<boolean[]>(Array(6).fill(false));
 
@@ -105,8 +138,12 @@ export default function App() {
 
   const judge = () => {
     const middle = reels.map((r) => r.middle);
-    return middle.every((m, i) => m === currentTarget.correct[i]);
+    const map = middle.map((m, i) => m === currentTarget.correct[i]);
+    setHitMap(map);
+    return map.every((v) => v);
   };
+
+
 
 
 
@@ -131,7 +168,21 @@ export default function App() {
     if (isSpinning) return;
     if (coins <= 0) return;      // ★コイン不足なら開始不可
 
-    setResult(null);             // 前回結果リセット
+    setResult(null);                    // 前回結果リセット
+    setHitMap(Array(6).fill(false));    // ★当たり外れ表示リセット
+
+    setResult(null);
+    setHitMap(Array(6).fill(false));
+
+    setMarqueeFailLock(false); // ★不正解の暗さ固定を解除（次ゲームのため）
+    setMarqueeBlink(false);    // ★点滅もリセット
+
+    if (blinkTimerRef.current !== null) { // ★タイマーも掃除
+      window.clearTimeout(blinkTimerRef.current);
+      blinkTimerRef.current = null;
+    }
+
+
 
     const nextTarget = targets[Math.floor(Math.random() * targets.length)];
     setCurrentTarget(nextTarget);
@@ -174,14 +225,20 @@ export default function App() {
           {/* 左：メイン筐体 */}
           <main className="main">
             <TargetInfo target={currentTarget} />
-            <Reels reels={reels} result={result} stem={currentTarget.stem} />
+            <Reels reels={reels} result={result} stem={currentTarget.stem} hitMap={hitMap} />
+
+
             <StopButtons
               disabled={!isSpinning}
               spinningCols={spinningCols}
               onStop={onStopClick}
             />
+            <Marquee
+              dim={isSpinning || marqueeFailLock}
+              blink={marqueeBlink}
+            />
 
-            <Marquee />
+
           </main>
 
 

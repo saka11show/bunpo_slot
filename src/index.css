@@ -1,3 +1,5 @@
+*, *::before, *::after { box-sizing: border-box; }
+
 html {
   background-color: white;
 }
@@ -7,6 +9,7 @@ body {
   height: 100%;
   margin: 0;
   background-color: #242424; /* 外界の色 */
+  overflow: hidden;
 }
 
 h1 {

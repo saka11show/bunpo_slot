@@ -11,7 +11,7 @@
 
 .main {
   display: grid;
-  grid-template-rows: 15vh 40vh 10vh 35vh;
+  grid-template-rows: 15vh 40vh 8vh 37vh;
 }
 
 .target-info {
@@ -55,46 +55,192 @@
   background-color: white;
 }
 
+
 .reels {
   display: grid;
   grid-template-rows: 20% 80%;
+
+  border-radius: 10px;     /* ★親の角丸 */
+  overflow: hidden;        /* ★はみ出しカット */
+  background: #0b0b0b;     /* ★隙間が見えても黒で馴染む */
+  padding: 5px;           /* ★内側余白（これでヘッダーがフレーム内に収まる） */
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08);
 }
 
-.reel-headers {
+
+.reel-headers,
+.reel-windows {
   display: grid;
-  grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
+  grid-template-columns: 20% repeat(6, 1fr); /* ★完全一致 */
+  gap: 8px;                                   /* ★完全一致 */
+  padding: 0;                               /* ★完全一致 */
+}
+
+
+
+.reel-headers {
+  padding: 5px;
+  border-radius: 16px;
+  gap: 8px;
+
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.6),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+
+  border: 1px solid #444;
 }
 
 .reel-header {
-  border: 4px solid #222222;
+  padding: 2px;
+  border-radius: 12px;
+
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  border: 2px solid transparent;
+  /* ★うっすら金 */
+
+  background-clip: padding-box;
+
+  position: relative;
+
+ box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.25);  /* 外側を弱く */
+}
+
+.reel-header::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 11px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+      rgba(255, 215, 0, 0.5),
+      rgba(255, 240, 150, 0.4),
+      rgba(180, 140, 0, 0.5));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+
+.header-gokan {
+  background: linear-gradient(#2b2b2b, #111);
+  color: #f5f5f5;
+}
+
+.header-0 {
+  background: linear-gradient(#c94c4c, #8b2e2e);
+}
+
+/* 赤 */
+.header-1 {
+  background: linear-gradient(#d28b4c, #8b5a2e);
+}
+
+/* 橙 */
+.header-2 {
+  background: linear-gradient(#d6c84c, #8b8b2e);
+}
+
+/* 黄 */
+.header-3 {
+  background: linear-gradient(#4ca96c, #2e8b57);
+}
+
+/* 緑 */
+.header-4 {
+  background: linear-gradient(#4c8fc9, #2e6b8b);
+}
+
+/* 青 */
+.header-5 {
+  background: linear-gradient(#8b4cc9, #5a2e8b);
+}
+
+/* 紫 */
+
+
+.reel-header h2,
+.reel-header h1 {
+  color: #f2f2f2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+
+
+.reel-gokan {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
 }
 
 .reel-windows {
   display: grid;
-  grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
+  grid-template-columns: 20% repeat(6, 1fr);
+  gap: 4px;
+
+  padding: 2px;
+
+
 }
 
-.reel-gokan {
-  border: 4px solid #222222;
-  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
-}
 
-.reel-window{
+.reel-window {
   display: grid;
   grid-template-rows: 25% 50% 25%;
-  border: 4px solid #222222;
+  position: relative;
+  border-radius: 12px;
+
 }
+
+.reel-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.reel-window-top,
+.reel-window-middle,
+.reel-window-bottom {
+  padding: 14px 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #f5f5f5;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+.reel-window-top,
+.reel-window-bottom {
+  background: linear-gradient(#2a2a2a, #1a1a1a);
+  color: #ccc;
+}
+
 
 .reel-window-top {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
   background-color: gray;
 }
 
-.reel-window-middle {
-  box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
-  background-color: white;
+.spinning .reel-window-middle {
+  filter: blur(1px);
 }
+
+
+.reel-window-middle {
+  background: linear-gradient(#ffffff, #f0f0f0);
+  color: #111;
+  text-shadow: none;
+
+  border-top: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+
 
 .reel-window-bottom {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
@@ -106,21 +252,135 @@
   box-shadow: 0 0 12px 4px rgba(255, 255, 120, 0.8);
 }
 
+/* 成功列：黄色発光 */
+.reel-window-middle.hit {
+  background: radial-gradient(circle, #fff 0%, #ffeb3b 45%, #fbc02d 75%);
+  box-shadow: 0 0 12px rgba(255, 235, 59, 0.9), 0 0 24px rgba(251, 192, 45, 0.8);
+}
+
+/* 失敗列：赤発光 */
+.reel-window-middle.miss {
+  background: radial-gradient(circle, #fff 0%, #ff8a80 45%, #e53935 75%);
+  box-shadow: 0 0 12px rgba(229, 57, 53, 0.9), 0 0 24px rgba(229, 57, 53, 0.7);
+}
+
+
 
 .stop-buttons {
   display: grid;
-  grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
+  grid-template-columns: 20% repeat(6, 1fr); /* ★リールと一致 */
+  gap: 5px;                                    /* ★一致 */
+  padding: 12px;                               /* ★一致 */
   align-items: center;
 }
 
+
 .stop-button {
-  margin: 2px;
-  height: 70%;
+  position: relative;
+  border: none;
+  padding: 12px 0;
+  font-weight: bold;
+  color: #222;
+  cursor: pointer;
+
+  border-radius: 12px;
+
+  /* 立体感 */
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.25),
+    inset 0 2px 6px rgba(255, 255, 255, 0.6);
+
+  transition: transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
 }
 
-.marquee {
-  background-color: darkblue;
+/* 上部の光沢レイヤー */
+.stop-button::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 10%;
+  width: 80%;
+  height: 35%;
+  border-radius: 50%;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0));
+  pointer-events: none;
 }
+
+
+/* 活用形カラー */
+.stop-0 {
+  background: linear-gradient(#ffb3b3, #ff8080);
+}
+
+.stop-1 {
+  background: linear-gradient(#ffd9b3, #ffbf80);
+}
+
+.stop-2 {
+  background: linear-gradient(#ffffb3, #ffff66);
+}
+
+.stop-3 {
+  background: linear-gradient(#b3ffb3, #66ff66);
+}
+
+.stop-4 {
+  background: linear-gradient(#b3ffff, #66ffff);
+}
+
+.stop-5 {
+  background: linear-gradient(#e0b3ff, #bf80ff);
+}
+
+
+/* 押下時 */
+.stop-button:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.25),
+    inset 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 無効時 */
+.stop-button:disabled {
+  filter: brightness(0.7) saturate(0.7);
+  cursor: not-allowed;
+}
+
+
+
+.marquee {
+  transition: filter 150ms ease;
+}
+
+/* 回転中 or fail固定で暗く */
+.marquee.is-dim {
+  filter: brightness(0.55);
+}
+
+/* 成功点滅（暗さより優先） */
+@keyframes marqueeBlink {
+
+  0%,
+  100% {
+    filter: brightness(1.0);
+  }
+
+  50% {
+    filter: brightness(1.7);
+  }
+}
+
+.marquee.is-blink {
+  animation: marqueeBlink 0.18s steps(2, end) infinite;
+}
+
 
 .side {
   display: grid;
@@ -175,5 +435,3 @@
   margin: 5px;
   background-color: #a59aca;
 }
-
-
