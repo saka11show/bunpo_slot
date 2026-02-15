@@ -101,6 +101,12 @@
   background-color: gray;
 }
 
+.glow-success .reel-window,
+.glow-success .reel-gokan {
+  box-shadow: 0 0 12px 4px rgba(255, 255, 120, 0.8);
+}
+
+
 .stop-buttons {
   display: grid;
   grid-template-columns: 22% 13% 13% 13% 13% 13% 13%;
