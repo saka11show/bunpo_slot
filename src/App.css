@@ -14,6 +14,14 @@
   grid-template-rows: 15vh 40vh 8vh 37vh;
 }
 
+.target-info h1,
+.target-info h2,
+.target-info h3 {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  letter-spacing: 1px;
+}
+
+
 .target-info {
   display: grid;
   grid-template-columns: 30% 35% 35%;
@@ -21,39 +29,57 @@
 }
 
 .target-title {
-  border: 2px solid black;
-  background-color: #a59aca;
+  padding: 10px;
+
+  background: linear-gradient(
+    145deg,
+    #6c5aa8,
+    #4a3c78
+  );
+
+  color: #fff;
+
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.12),
+    0 4px 10px rgba(0,0,0,0.4);
+
+  border: 1px solid rgba(255,215,0,0.35);
 }
+
+.target-basic-form-title,
+.target-katsuyo-type-title {
+  background: linear-gradient(
+    145deg,
+    #6c5aa8,
+    #4a3c78
+  );
+  color: #fff;
+
+  border: 1px solid rgba(255,215,0,0.3);
+}
+
+.target-basic-form-value,
+.target-katsuyo-type-value {
+  background: linear-gradient(#ffffff, #f2f2f2);
+  color: #111;
+
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.08);
+}
+
+
 
 .target-basic-form {
   display: grid;
   grid-template-rows: 30% 70%;
 }
 
-.target-basic-form-title {
-  border: 2px solid black;
-  background-color: #a59aca;
-}
-
-.target-basic-form-value {
-  border: 2px solid black;
-  background-color: white;
-}
 
 .target-katsuyo-type {
   display: grid;
   grid-template-rows: 30% 70%;
 }
 
-.target-katsuyo-type-title {
-  border: 2px solid black;
-  background-color: #a59aca;
-}
-
-.target-katsuyo-type-value {
-  border: 2px solid black;
-  background-color: white;
-}
 
 
 .reels {
@@ -391,17 +417,32 @@
   display: grid;
   grid-template-rows: 30% 70%;
   border: 5px solid black;
+
 }
 
 .coin-status-title {
-  border: 2px solid black;
-  background-color: #a59aca;
+  background: linear-gradient(
+    145deg,
+    #6c5aa8,
+    #4a3c78
+  );
+  color: #fff;
+  border: 1px solid rgba(255,215,0,0.3);
 }
 
+
 .coin-status {
-  border: 2px solid black;
-  background-color: white;
+  background: linear-gradient(#ffffff, #f2f2f2);
+  color: #111;
+
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.08);
+
+    border: 1px solid rgba(255,215,0,0.3);
 }
+
+
+/* ===== Lever（筐体レバー） ===== */
 
 .lever {
   display: grid;
@@ -410,13 +451,157 @@
 }
 
 .lever-title {
-  background-color: #a59aca;
+  background: linear-gradient(145deg, #6c5aa8, #4a3c78);
+  color: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: inset 0 2px 6px rgba(255,255,255,0.12);
 }
 
-.lever-button {
-  margin: 3px;
-  background-color: #e0e0e0
+/* レバーの設置面 */
+.lever-area {
+  height: 100%;
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+  background: linear-gradient(#f3f3f3, #dcdcdc);
+  border: 2px solid rgba(0,0,0,0.35);
+  box-shadow: inset 0 3px 10px rgba(0,0,0,0.12);
+
+  perspective: 700px; /* ★3D感 */
 }
+
+/* クリックできる透明ボタン */
+.lever-hitbox {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.lever-hitbox:disabled {
+  cursor: not-allowed;
+}
+
+/* レバー構成（玉→棒→土台を縦に一体化） */
+.lever-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  transform-origin: 50% 92%; /* ★支点は土台付け根 */
+  transition: transform 120ms cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+}
+
+/* 玉 */
+.lever-knob {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffffff 0%, #ff9aa8 25%, #ff4f6b 60%, #b5152f 100%);
+  box-shadow:
+    0 10px 18px rgba(0,0,0,0.35),
+    inset 0 2px 10px rgba(255,255,255,0.45);
+
+  position: relative;
+  z-index: 3;
+
+  transition: transform 120ms cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+}
+
+/* 棒（上下に食い込ませて“くっつける”） */
+.lever-rod {
+  width: 16px;
+  height: 160px;
+  border-radius: 10px;
+
+  background: linear-gradient(90deg, #e6e6e6, #bdbdbd, #f0f0f0);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.35),
+    0 8px 12px rgba(0,0,0,0.25);
+
+  margin-top: -10px;    /* ★玉に食い込む */
+  margin-bottom: -18px; /* ★土台に食い込む */
+
+  position: relative;
+  z-index: 2;
+
+  transition: height 120ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* 土台 */
+.lever-base {
+  width: 160px;
+  height: 70px;
+  border-radius: 18px;
+
+  background: linear-gradient(145deg, #6c5aa8, #3a2f66);
+  border: 1px solid rgba(255,215,0,0.35);
+
+  box-shadow:
+    0 10px 0 rgba(0,0,0,0.35),
+    inset 0 2px 8px rgba(255,255,255,0.15);
+
+  position: relative;
+  z-index: 1;
+
+  transition: box-shadow 120ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* 土台の穴（棒が刺さってる感じ） */
+.lever-socket {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 18px;
+  border-radius: 999px;
+
+  background: radial-gradient(circle at 50% 30%, #111 0%, #000 70%);
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.08),
+    0 2px 4px rgba(0,0,0,0.35);
+}
+
+/* ===== 引いた時の動き（球が下に来る） ===== */
+
+/* レバー全体は手前に倒れる */
+.lever-hitbox.is-pulled .lever-body {
+  transform: rotateX(-22deg);
+}
+
+/* ★球だけガチャンと下に来る（引いた感の主役） */
+.lever-hitbox.is-pulled .lever-knob {
+  transform: translateY(18px) translateZ(8px);
+}
+
+/* 棒を少し伸ばして違和感を減らす */
+.lever-hitbox.is-pulled .lever-rod {
+  height: 175px;
+}
+
+/* 土台の影も変えて“ガチャン感” */
+.lever-hitbox.is-pulled .lever-base {
+  box-shadow:
+    0 4px 0 rgba(0,0,0,0.35),
+    inset 0 3px 10px rgba(0,0,0,0.25);
+}
+
+/* 無効時は全体を少し暗く */
+.lever-area.is-disabled {
+  filter: brightness(0.85) saturate(0.75);
+}
+
+
+
 
 .game-settings {
   display: grid;
