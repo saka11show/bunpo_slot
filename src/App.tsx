@@ -38,9 +38,6 @@ export default function App() {
     },
   ];
 
-
-  const correctMiddle = ["か", "き", "く", "く", "け", "け"];
-
   const [isSpinning, setIsSpinning] = useState(false); //回っている状態を管理
   const [reels, setReels] = useState<ReelCell[]>(
     Array.from({ length: 6 }, () => ({ top: "・", middle: "・", bottom: "・" }))
@@ -83,8 +80,6 @@ export default function App() {
 
 
   const timerRef = useRef<number | null>(null);
-
-  const pool = ["か", "き", "く", "け", "こ"];
 
   const spinOnce = () => {
     const cols = spinningColsRef.current;     // STOPの最新状態
