@@ -1,7 +1,37 @@
+:root {
+  --success-blink-ms: 180ms;
+  --success-blink-count: 10;
+}
+
 .page {
   width: 100vw;
   height: 100vh;
   background-color: black;
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 12px 18px;
+  border-radius: 16px;
+
+  background: linear-gradient(145deg, #1e7f63, #125042);
+  color: #ffffff;
+
+  border: 1px solid rgba(255, 215, 0, 0.45);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.6),
+    inset 0 2px 6px rgba(255, 255, 255, 0.18);
+
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .contents {
@@ -278,6 +308,39 @@
   box-shadow: 0 0 12px 4px rgba(255, 255, 120, 0.8);
 }
 
+/* ===== reels success/fail glow animation ===== */
+
+@keyframes reelsGlowBlink {
+  0%   { box-shadow: 0 0 6px 2px rgba(255, 255, 120, 0.35); }
+  100% { box-shadow: 0 0 14px 6px rgba(255, 255, 120, 0.9); }
+}
+
+@keyframes reelsGlowBlinkFail {
+  0% {
+    box-shadow: 0 0 6px 2px rgba(255, 120, 120, 0.35);
+    filter: brightness(1);
+  }
+  100% {
+    box-shadow: 0 0 14px 6px rgba(255, 120, 120, 0.9);
+    filter: brightness(1.08);
+  }
+}
+
+/* 点滅対象：リール全体の枠＆語幹＆各ウィンドウ */
+.reels.glow-success {
+  animation: reelsGlowBlink 0.18s steps(2, end) 10;
+}
+
+.reels.glow-success .reel-window,
+.reels.glow-success .reel-gokan {
+  animation: reelsGlowBlink var(--success-blink-ms) steps(2, end) var(--success-blink-count);
+}
+
+.glow-fail .reel-window,
+.glow-fail .reel-gokan {
+  box-shadow: 0 0 12px 4px rgba(255, 80, 80, 0.85);
+}
+
 /* 成功列：黄色発光 */
 .reel-window-middle.hit {
   background: radial-gradient(circle, #fff 0%, #ffeb3b 45%, #fbc02d 75%);
@@ -404,9 +467,8 @@
 }
 
 .marquee.is-blink {
-  animation: marqueeBlink 0.18s steps(2, end) infinite;
+  animation: marqueeBlink 0.18s steps(2, end) 10;
 }
-
 
 .side {
   display: grid;

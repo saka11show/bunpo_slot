@@ -1,18 +1,21 @@
 type Props = {
   disabled: boolean;
   spinningCols: boolean[];
-  onStop: (colIndex: number) => void;
+  onStop: (i: number) => void;
+  manualStopsLeft: number;
 };
 
-export function StopButtons({ disabled, spinningCols, onStop }: Props) {
+export function StopButtons({ disabled, spinningCols, onStop, manualStopsLeft }: Props) {
+  const cannotManualStop = manualStopsLeft <= 0;
+
   return (
     <section className="stop-buttons">
       <div className="dummy" aria-hidden="true" />
       {spinningCols.map((isColSpinning, i) => (
         <button
           key={i}
-          className={`stop-button stop-${i}`}   // ★ここを変更
-          disabled={disabled || !isColSpinning}
+          className={`stop-button stop-${i}`}  // ★色クラス復活
+          disabled={disabled || !isColSpinning || cannotManualStop}
           onClick={() => onStop(i)}
         >
           STOP
@@ -21,4 +24,3 @@ export function StopButtons({ disabled, spinningCols, onStop }: Props) {
     </section>
   );
 }
-
