@@ -51,7 +51,6 @@
   letter-spacing: 1px;
 }
 
-
 .target-info {
   display: grid;
   grid-template-columns: 30% 35% 35%;
@@ -97,20 +96,15 @@
     inset 0 2px 4px rgba(0,0,0,0.08);
 }
 
-
-
 .target-basic-form {
   display: grid;
   grid-template-rows: 30% 70%;
 }
 
-
 .target-katsuyo-type {
   display: grid;
   grid-template-rows: 30% 70%;
 }
-
-
 
 .reels {
   display: grid;
@@ -123,7 +117,6 @@
   box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08);
 }
 
-
 .reel-headers,
 .reel-windows {
   display: grid;
@@ -131,8 +124,6 @@
   gap: 8px;                                   /* ★完全一致 */
   padding: 0;                               /* ★完全一致 */
 }
-
-
 
 .reel-headers {
   padding: 5px;
@@ -183,7 +174,6 @@
   pointer-events: none;
 }
 
-
 .header-gokan {
   background: linear-gradient(#2b2b2b, #111);
   color: #f5f5f5;
@@ -220,14 +210,11 @@
 
 /* 紫 */
 
-
 .reel-header h2,
 .reel-header h1 {
   color: #f2f2f2;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
-
-
 
 .reel-gokan {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
@@ -239,17 +226,13 @@
   gap: 4px;
 
   padding: 2px;
-
-
 }
-
 
 .reel-window {
   display: grid;
   grid-template-rows: 25% 50% 25%;
   position: relative;
   border-radius: 12px;
-
 }
 
 .reel-window::after {
@@ -276,16 +259,15 @@
   color: #ccc;
 }
 
-
 .reel-window-top {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
   background-color: gray;
 }
 
+/* 旧：親に .spinning を付けていないと効きにくいので、下の is-spinning を使う想定 */
 .spinning .reel-window-middle {
   filter: blur(1px);
 }
-
 
 .reel-window-middle {
   background: linear-gradient(#ffffff, #f0f0f0);
@@ -295,8 +277,6 @@
   border-top: 1px solid rgba(0,0,0,0.08);
   border-bottom: 1px solid rgba(0,0,0,0.08);
 }
-
-
 
 .reel-window-bottom {
   box-shadow: inset 0.5px 0.5px 0.5px 0.5px black;
@@ -353,7 +333,49 @@
   box-shadow: 0 0 12px rgba(229, 57, 53, 0.9), 0 0 24px rgba(229, 57, 53, 0.7);
 }
 
+/* =========================================================
+   ★追加：回転中 / 停止中 がボタン以外でも分かる見た目
+   ★追加：止まった瞬間の「カチャン」エフェクト（停止フラッシュ）
+   ※ Reels.tsx で reel-window に
+      is-spinning / is-stopped / is-stop-flash を付ける前提
+   ========================================================= */
 
+/* 回転中：少し暗く、中央だけブラー */
+.reel-window.is-spinning {
+  filter: brightness(0.82) saturate(0.9);
+}
+
+/* 停止中：少し明るく、枠をはっきり */
+.reel-window.is-stopped {
+  filter: brightness(1.05);
+}
+
+.reel-window.is-stopped::after {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+/* 止まった瞬間：フラッシュ＆わずかに沈む */
+@keyframes stopFlash {
+  0% {
+    transform: translateY(0);
+    filter: brightness(1.05);
+  }
+  50% {
+    transform: translateY(1px);
+    filter: brightness(1.22);
+    box-shadow: 0 0 18px 6px rgba(255, 255, 255, 0.55);
+  }
+  100% {
+    transform: translateY(0);
+    filter: brightness(1.05);
+  }
+}
+
+.reel-window.is-stop-flash {
+  animation: stopFlash 180ms ease-out 1;
+}
+
+/* ===== Stop Buttons ===== */
 
 .stop-buttons {
   display: grid;
@@ -362,7 +384,6 @@
   padding: 12px;                               /* ★一致 */
   align-items: center;
 }
-
 
 .stop-button {
   position: relative;
@@ -400,7 +421,6 @@
   pointer-events: none;
 }
 
-
 /* 活用形カラー */
 .stop-0 {
   background: linear-gradient(#ffb3b3, #ff8080);
@@ -426,7 +446,6 @@
   background: linear-gradient(#e0b3ff, #bf80ff);
 }
 
-
 /* 押下時 */
 .stop-button:active {
   transform: translateY(3px);
@@ -435,14 +454,11 @@
     inset 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-
 /* 無効時 */
 .stop-button:disabled {
   filter: brightness(0.7) saturate(0.7);
   cursor: not-allowed;
 }
-
-
 
 .marquee {
   transition: filter 150ms ease;
@@ -455,7 +471,6 @@
 
 /* 成功点滅（暗さより優先） */
 @keyframes marqueeBlink {
-
   0%,
   100% {
     filter: brightness(1.0);
@@ -479,7 +494,6 @@
   display: grid;
   grid-template-rows: 30% 70%;
   border: 5px solid black;
-
 }
 
 .coin-status-title {
@@ -492,7 +506,6 @@
   border: 1px solid rgba(255,215,0,0.3);
 }
 
-
 .coin-status {
   background: linear-gradient(#ffffff, #f2f2f2);
   color: #111;
@@ -502,7 +515,6 @@
 
     border: 1px solid rgba(255,215,0,0.3);
 }
-
 
 /* ===== Lever（筐体レバー） ===== */
 
@@ -661,9 +673,6 @@
 .lever-area.is-disabled {
   filter: brightness(0.85) saturate(0.75);
 }
-
-
-
 
 .game-settings {
   display: grid;

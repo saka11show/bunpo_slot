@@ -109,6 +109,9 @@ export default function App() {
 
   const [hitMap, setHitMap] = useState<boolean[]>(Array(6).fill(false));
 
+  const [stopFlash, setStopFlash] = useState<boolean[]>(Array(6).fill(false));
+  const stopFlashTimersRef = useRef<Array<number | null>>(Array(6).fill(null));
+
   // ===============================
   // トースト
   // ===============================
@@ -148,9 +151,17 @@ export default function App() {
   // ★追加：指定列の middle を「指定文字」に強制的に合わせる
   //（pool の並び順に合わせて top/bottom も整合させる）
   const forceMiddleTo = (colIndex: number, middleValue: string) => {
-    const pool = targetRef.current.pool;
+    const t = targetRef.current;
+    const pool = t.pool;
     const idx = pool.indexOf(middleValue);
-    if (idx < 0) return;
+
+    if (idx < 0) {
+      console.warn(
+        "[forceMiddleTo] correct not in pool",
+        { verb: t.verb, type: t.type, colIndex, middleValue, pool, correct: t.correct }
+      );
+      return false; // ★追加：成否を返す
+    }
 
     const top = pool[(idx - 1 + pool.length) % pool.length];
     const bottom = pool[(idx + 1) % pool.length];
@@ -160,6 +171,8 @@ export default function App() {
       next[colIndex] = { top, middle: middleValue, bottom };
       return next;
     });
+
+    return true;
   };
 
   // ===============================
@@ -167,15 +180,14 @@ export default function App() {
   // ===============================
 
   const spinOnce = () => {
-    const cols = spinningColsRef.current;
-    const pool = targetRef.current.pool;
+    setReels((prev) => {
+      const cols = spinningColsRef.current;      // ★ここで最新を読む
+      const pool = targetRef.current.pool;       // ★ここで最新を読む
 
-    setReels((prev) =>
-      prev.map((cell, i) => {
+      return prev.map((cell, i) => {
         if (!cols[i]) return cell;
 
         const currentBottom = pool.includes(cell.bottom) ? cell.bottom : pool[0];
-
         const nextIndex = (pool.indexOf(currentBottom) + 1) % pool.length;
 
         return {
@@ -183,30 +195,50 @@ export default function App() {
           middle: cell.bottom,
           bottom: pool[nextIndex],
         };
-      })
-    );
+      });
+    });
   };
 
   const stopCol = (colIndex: number, mode: "manual" | "auto") => {
-    // ★修正：isSpinning(state) ではなく ref を見る（クロージャ/非同期対策）
     if (!isSpinningRef.current) return;
-
     if (!spinningColsRef.current[colIndex]) return;
-
     if (mode === "manual" && manualStopsLeftRef.current <= 0) return;
 
+    // ★最重要：ref を先に落とす（同期）
+    spinningColsRef.current = spinningColsRef.current.map((v, i) =>
+      i === colIndex ? false : v
+    );
+
+    // state は描画用に後追いでOK
     setSpinningCols((prev) => {
       const next = [...prev];
       next[colIndex] = false;
-      spinningColsRef.current = next;
       return next;
     });
 
-    // ★修正：manualStopsLeft は ref と state を同期して減らす
     if (mode === "manual") {
       const next = Math.max(0, manualStopsLeftRef.current - 1);
       setManualStopsLeftSync(next);
     }
+
+    // 停止フラッシュ
+    setStopFlash((prev) => {
+      const next = [...prev];
+      next[colIndex] = true;
+      return next;
+    });
+
+    const old = stopFlashTimersRef.current[colIndex];
+    if (old) window.clearTimeout(old);
+
+    stopFlashTimersRef.current[colIndex] = window.setTimeout(() => {
+      setStopFlash((prev) => {
+        const next = [...prev];
+        next[colIndex] = false;
+        return next;
+      });
+      stopFlashTimersRef.current[colIndex] = null;
+    }, 180);
   };
 
   const runAutoStopsFirst = (autoCount: number) => {
@@ -228,11 +260,11 @@ export default function App() {
 
     cols.forEach((colIndex, k) => {
       const id = window.setTimeout(() => {
-        // ★追加：自動停止列は止める直前に「正解」を入れる
-        forceMiddleTo(colIndex, targetRef.current.correct[colIndex]);
-
-        // ★止める
+        // ★先に止める（refが同期で false になる）
         stopCol(colIndex, "auto");
+
+        // ★止めた後に正解で固定（上書きされない）
+        forceMiddleTo(colIndex, targetRef.current.correct[colIndex]);
 
         // 最後の自動停止が終わったら手動STOPを解禁（ref/state 同期）
         if (k === cols.length - 1) {
@@ -353,6 +385,8 @@ export default function App() {
               result={result}
               stem={currentTarget.stem}
               hitMap={hitMap}
+              spinningCols={spinningCols}
+              stopFlash={stopFlash}
             />
 
             <StopButtons
