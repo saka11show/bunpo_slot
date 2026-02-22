@@ -404,15 +404,19 @@ export default function App() {
 
           <aside className="side">
             <SideHeader coins={coins} />
-            <Lever disabled={isSpinning || coins <= 0} onClick={onLeverClick} />
-            <GameSettings
-              spinMs={spinMs}
-              onChangeSpinMs={setSpinMs}
-              stopLimit={stopLimit}
-              onChangeStopLimit={setStopLimit}
-              disabled={isSpinning}
-              onApplied={showToast}
-            />
+
+            <div className="side-body">
+              <Lever disabled={isSpinning || coins <= 0} onClick={onLeverClick} />
+
+              <GameSettings
+                spinMs={spinMs}
+                onChangeSpinMs={setSpinMs}
+                stopLimit={stopLimit}
+                onChangeStopLimit={setStopLimit}
+                disabled={isSpinning}
+                onApplied={showToast}
+              />
+            </div>
           </aside>
         </div>
       </div>

@@ -10,8 +10,7 @@ export function TargetInfo({ target }: Props) {
   return (
     <section className="target-info">
       <div className="target-title center">
-        <h1>活用表を<br></br>
-        完成させよ!</h1>
+        <h1 className="target-title-text">活用表を完成させよ!</h1>
       </div>
 
       <div className="target-basic-form">
