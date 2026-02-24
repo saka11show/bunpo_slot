@@ -1,4 +1,5 @@
 import "./App.css";
+import { targets as allTargets, type Target } from "./data/targets";
 import { useEffect, useRef, useState } from "react";
 
 import { TargetInfo } from "./components/TargetInfo";
@@ -16,14 +17,6 @@ export default function App() {
 
   type ReelCell = { top: string; middle: string; bottom: string };
 
-  type Target = {
-    verb: string;
-    stem: string;
-    type: string;
-    pool: string[];
-    correct: string[];
-  };
-
   type StopLimit = 1 | 2 | 3 | 4 | 5 | 6;
 
   // ===============================
@@ -37,6 +30,31 @@ export default function App() {
   const SUCCESS_BLINK_MS = 180;   // 0.18s と一致
   const SUCCESS_BLINK_COUNT = 10; // 10回点滅（好み）
   const SUCCESS_EFFECT_DURATION = SUCCESS_BLINK_MS * SUCCESS_BLINK_COUNT;
+
+
+  // ★追加：出題グループの有効/無効
+  type VerbGroup =
+    | "四段"
+    | "上二段"
+    | "下二段"
+    | "上一段"
+    | "下一段"
+    | "カ変"
+    | "サ変"
+    | "ナ変"
+    | "ラ変";
+
+  const [enabledGroups, setEnabledGroups] = useState<Record<VerbGroup, boolean>>({
+    四段: true,
+    上二段: true,
+    下二段: true,
+    上一段: true,
+    下一段: true,
+    カ変: true,
+    サ変: true,
+    ナ変: true,
+    ラ変: true,
+  });
 
   // ===============================
   // ゲーム状態
@@ -76,25 +94,8 @@ export default function App() {
   // ターゲット
   // ===============================
 
-  const targets: Target[] = [
-    {
-      verb: "書く",
-      stem: "書",
-      type: "カ行四段",
-      pool: ["か", "き", "く", "け", "こ"],
-      correct: ["か", "き", "く", "く", "け", "け"],
-    },
-    {
-      verb: "読む",
-      stem: "読",
-      type: "マ行四段",
-      pool: ["ま", "み", "む", "め", "も"],
-      correct: ["ま", "み", "む", "む", "め", "め"],
-    },
-  ];
-
-  const [currentTarget, setCurrentTarget] = useState<Target>(targets[0]);
-  const targetRef = useRef<Target>(targets[0]);
+  const [currentTarget, setCurrentTarget] = useState<Target>(allTargets[0]);
+  const targetRef = useRef<Target>(allTargets[0]);
 
   const [reels, setReels] = useState<ReelCell[]>(
     Array.from({ length: 6 }, () => ({ top: "・", middle: "・", bottom: "・" }))
@@ -141,12 +142,27 @@ export default function App() {
     return a;
   };
 
-  const createInitialReels = (pool: string[]): ReelCell[] =>
-    Array.from({ length: 6 }, () => ({
-      top: pool[0],
-      middle: pool[1],
-      bottom: pool[2],
-    }));
+  const createInitialReels = (pool: string[]): ReelCell[] => {
+    const n = pool.length;
+    if (n === 0) {
+      return Array.from({ length: 6 }, () => ({ top: "・", middle: "・", bottom: "・" }));
+    }
+    if (n === 1) {
+      return Array.from({ length: 6 }, () => ({ top: pool[0], middle: pool[0], bottom: pool[0] }));
+    }
+    if (n === 2) {
+      return Array.from({ length: 6 }, () => ({ top: pool[0], middle: pool[1], bottom: pool[0] }));
+    }
+
+    // n >= 3
+    return Array.from({ length: 6 }, () => {
+      const start = Math.floor(Math.random() * n);
+      const top = pool[(start + n - 1) % n];
+      const middle = pool[start];
+      const bottom = pool[(start + 1) % n];
+      return { top, middle, bottom };
+    });
+  };
 
   // ★追加：指定列の middle を「指定文字」に強制的に合わせる
   //（pool の並び順に合わせて top/bottom も整合させる）
@@ -277,8 +293,9 @@ export default function App() {
   };
 
   const judge = () => {
+    const t = targetRef.current;
     const middle = reels.map((r) => r.middle);
-    const map = middle.map((m, i) => m === currentTarget.correct[i]);
+    const map = middle.map((m, i) => m === t.correct[i]);
     setHitMap(map);
     return map.every((v) => v);
   };
@@ -337,7 +354,14 @@ export default function App() {
     autoStopTimersRef.current.forEach((id) => window.clearTimeout(id));
     autoStopTimersRef.current = [];
 
-    const nextTarget = targets[Math.floor(Math.random() * targets.length)];
+    const list = allTargets.filter((t) => enabledGroups[t.group]);
+
+    if (list.length === 0) {
+      showToast("出題対象がありません");
+      return;
+    }
+
+    const nextTarget = list[Math.floor(Math.random() * list.length)];
     setCurrentTarget(nextTarget);
     targetRef.current = nextTarget;
 
@@ -407,6 +431,27 @@ export default function App() {
 
             <div className="side-body">
               <Lever disabled={isSpinning || coins <= 0} onClick={onLeverClick} />
+
+              <div className="group-toggle">
+                <div className="group-toggle-title">出題対象</div>
+
+                <div className="group-toggle-buttons">
+                  {(["四段","上二段","下二段","上一段","下一段","カ変","サ変","ナ変","ラ変"] as const).map((g) => (
+                    <label key={g} className={`group-toggle-btn ${enabledGroups[g] ? "is-on" : ""}`}>
+                      <input
+                        className="group-toggle-input"
+                        type="checkbox"
+                        checked={enabledGroups[g]}
+                        disabled={isSpinning}
+                        onChange={() =>
+                          setEnabledGroups((prev) => ({ ...prev, [g]: !prev[g] }))
+                        }
+                      />
+                      {g}
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               <GameSettings
                 spinMs={spinMs}

@@ -696,7 +696,7 @@
 
 .lever-rod {
   width: 16px;
-  height: 160px;
+  height: 160px;              /* ★固定のまま */
   border-radius: 10px;
 
   background: linear-gradient(90deg, #e6e6e6, #bdbdbd, #f0f0f0);
@@ -710,8 +710,12 @@
   position: relative;
   z-index: 2;
 
-  transition: height 120ms cubic-bezier(.2, .9, .2, 1);
+  /* ★高さは変えず transform で伸縮 */
+  transform-origin: 50% 0%;
+  transition: transform 120ms cubic-bezier(.2, .9, .2, 1);
+  will-change: transform;
 }
+
 
 .lever-base {
   width: 160px;
@@ -755,7 +759,7 @@
 }
 
 .lever-hitbox.is-pulled .lever-rod {
-  height: 175px;
+  transform: scaleY(1.09);   /* 160 * 1.09 ≒ 174.4 */
 }
 
 .lever-hitbox.is-pulled .lever-base {
@@ -767,6 +771,66 @@
 .lever-area.is-disabled {
   filter: brightness(0.85) saturate(0.75);
 }
+
+/* 出題対象（ボタン風トグル） */
+.group-toggle {
+  margin-top: 12px;
+}
+
+.group-toggle-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.group-toggle-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.group-toggle-input {
+  /* 見た目は消す（機能は残す） */
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 12px;
+  border-radius: 10px;
+
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.group-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.group-toggle-btn:active {
+  transform: translateY(1px);
+}
+
+.group-toggle-btn.is-on {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.group-toggle-btn:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
 /* ===== Game Settings ===== */
 
@@ -863,3 +927,5 @@
     transform-origin: 50% 92%;
   }
 }
+
+.side-body { overflow-anchor: none; }
